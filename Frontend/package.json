@@ -6,6 +6,7 @@
     "serve": "^14.2.4"
   },
   "scripts": {
-    "start": "serve"
+    "build": "tsc",
+    "start": "serve dist"
   }
 }
