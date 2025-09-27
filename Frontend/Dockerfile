@@ -3,7 +3,7 @@ FROM node:20-alpine as build
 WORKDIR /app
 COPY package*.json ./
 
-# Add these lines to fix the issue
+# Adicione estas linhas para limpar o cache e o arquivo de bloqueio
 RUN npm cache clean --force
 RUN rm -f package-lock.json
 
