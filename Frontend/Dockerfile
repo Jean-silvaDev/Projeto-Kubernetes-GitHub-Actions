@@ -1,13 +1,18 @@
 # Etapa 1 - Compila o TypeScript
 FROM node:20-alpine as build
-WORKDIR /
+WORKDIR /app
 COPY package*.json ./
+
+# Add these lines to fix the issue
+RUN npm cache clean --force
+RUN rm -f package-lock.json
+
 RUN npm install
 COPY . .
-RUN npm run build   # compila para /dist
+RUN npm run build  # compila para /app/dist
 
 # Etapa 2 - Servir os arquivos compilados
 FROM nginx:alpine
-COPY --from=build /dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
