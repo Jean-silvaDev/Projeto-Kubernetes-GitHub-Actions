@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Adicione estas linhas para limpar o cache e o arquivo de bloqueio
-RUN npm cache clean --force
+RUN npm cache clean --force && npm install
 RUN rm -f package-lock.json
 
 RUN npm install
