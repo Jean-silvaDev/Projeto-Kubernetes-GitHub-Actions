@@ -11,6 +11,6 @@
     "moduleResolution": "node",
     "lib": ["DOM", "ES2015"]
   },
-  "include": ["*.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
