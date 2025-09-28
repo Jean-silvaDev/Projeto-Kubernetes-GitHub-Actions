@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Instala as dependências (tsc está incluído aqui)
-# RUN npm install
+RUN npm install
 
 # Mude para o usuário 'node' (um usuário não-root) para maior segurança
 # Este é o ponto onde o erro de permissão geralmente ocorre se o tsc não for acessível
