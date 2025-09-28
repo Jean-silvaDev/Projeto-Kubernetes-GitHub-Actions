@@ -1,6 +1,6 @@
 # Etapa 1: Build com Node
 FROM node:18 AS build
-WORKDIR /usr/src/app
+WORKDIR /frontend
 
 COPY package*.json tsconfig.json ./
 RUN npm install --legacy-peer-deps

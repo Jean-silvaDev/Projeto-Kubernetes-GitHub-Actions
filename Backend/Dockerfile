@@ -2,7 +2,7 @@
 FROM node:20-alpine
 
 # Criar diretório da aplicação
-WORKDIR /app
+WORKDIR /backend
 
 # Copiar package.json e instalar dependências
 COPY package*.json ./
