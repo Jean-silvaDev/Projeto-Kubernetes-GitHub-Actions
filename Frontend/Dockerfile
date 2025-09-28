@@ -1,26 +1,29 @@
-# Etapa 1: Construção (Build)
+# Etapa 1: Build com Node
 FROM node:20-slim AS build
 
 WORKDIR /usr/src/app
 
-# Copia arquivos de dependência e instala
+# Copia configs e instala dependências
 COPY package*.json tsconfig.json ./
 RUN npm install --legacy-peer-deps
 
-# Copia o restante do código
+# Copia código-fonte
 COPY . .
 
-# Compila TypeScript e copia arquivos estáticos
-RUN npx tsc && cp index.html dist/ && cp styles.css dist/
+# Compila TypeScript
+RUN npx tsc
+
+# Copia os arquivos estáticos pro dist
+RUN cp index.html dist/ && cp styles.css dist/
 
 # Etapa 2: Servir com Nginx
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
-# Limpa o conteúdo padrão do nginx
+# Limpa pasta padrão
 RUN rm -rf ./*
 
-# Copia apenas o resultado do build
+# Copia build gerado
 COPY --from=build /usr/src/app/dist .
 
 EXPOSE 80
