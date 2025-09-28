@@ -6,7 +6,7 @@
     "serve": "^14.2.4"
   },
   "scripts": {
-    "build": "tsc && cp index.html dist/ && cp styles.css dist/",
+    "build": "npx tsc && cp index.html dist/ && cp styles.css dist/",
     "start": "serve dist"
   }
 }
