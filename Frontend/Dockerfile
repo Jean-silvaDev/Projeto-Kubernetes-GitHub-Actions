@@ -1,34 +1,26 @@
 # Etapa 1: Construção (Build)
-# Use a versão slim para uma imagem menor, e nomeie esta etapa como 'build'
 FROM node:20-slim AS build
 
-# Define o diretório de trabalho dentro do container
 WORKDIR /usr/src/app
 
-# Copia package.json e package-lock.json para instalar as dependências
-# Isso permite que o Docker armazene a camada de 'install' em cache
-COPY package*.json ./
+# Copia arquivos de dependência e instala
+COPY package*.json tsconfig.json ./
+RUN npm install --legacy-peer-deps
 
-# Instala as dependências (tsc está incluído aqui)
-RUN npm install
-
-# Mude para o usuário 'node' (um usuário não-root) para maior segurança
-# Este é o ponto onde o erro de permissão geralmente ocorre se o tsc não for acessível
-USER node
-
-# Copia o restante dos arquivos da aplicação
+# Copia o restante do código
 COPY . .
 
-# Executa o build usando o script atualizado (agora usando 'npx tsc')
-# Como 'npx' é usado, a permissão e o caminho são resolvidos corretamente
-RUN npm run build
+# Compila TypeScript e copia arquivos estáticos
+RUN npx tsc && cp index.html dist/ && cp styles.css dist/
 
-# O Nginx stage (Etapa 2) que você forneceu continua abaixo deste.
+# Etapa 2: Servir com Nginx
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
+# Limpa o conteúdo padrão do nginx
 RUN rm -rf ./*
 
+# Copia apenas o resultado do build
 COPY --from=build /usr/src/app/dist .
 
 EXPOSE 80
