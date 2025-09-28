@@ -7,6 +7,10 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
+# adiciona node_modules/.bin no PATH
+ENV PATH="/usr/src/app/node_modules/.bin:$PATH"
+
+# agora tsc funciona normalmente
 RUN npm run build
 
 # Etapa 2: Servir com Nginx
