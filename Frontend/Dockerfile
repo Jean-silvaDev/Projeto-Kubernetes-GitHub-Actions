@@ -11,8 +11,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Compila TypeScript
-RUN npx tsc
-
+RUN npm run build
 # Copia os arquivos estáticos pro dist
 RUN cp index.html dist/ && cp styles.css dist/
 
