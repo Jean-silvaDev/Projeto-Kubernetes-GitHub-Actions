@@ -6,19 +6,17 @@ COPY package*.json tsconfig.json ./
 RUN npm install
 COPY . .
 
-# Compila o TypeScript
+# Compila o TypeScript + copia estáticos
 RUN npm run build
-
-# Copia o index.html e styles.css pro dist
-RUN cp index.html dist/ && cp styles.css dist/
-
 
 # Etapa 2: Servir com Nginx
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
+# Limpa arquivos antigos do Nginx
 RUN rm -rf ./*
 
+# Copia os artefatos do build
 COPY --from=build /app/dist .
 
 EXPOSE 80
