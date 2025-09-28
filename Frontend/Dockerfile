@@ -1,18 +1,25 @@
-# Etapa 1 - Compila o TypeScript
-FROM node:20-alpine as build
+# Etapa 1: Build com Node
+FROM node:18 AS build
 WORKDIR /app
-COPY package*.json ./
 
-# Adicione estas linhas para limpar o cache e o arquivo de bloqueio
-RUN npm cache clean --force && npm install
-RUN rm -f package-lock.json
-
+COPY package*.json tsconfig.json ./
 RUN npm install
 COPY . .
-RUN npm run build  # compila para /app/dist
 
-# Etapa 2 - Servir os arquivos compilados
+# Compila o TypeScript
+RUN npm run build
+
+# Copia o index.html e styles.css pro dist
+RUN cp index.html dist/ && cp styles.css dist/
+
+
+# Etapa 2: Servir com Nginx
 FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
+
+RUN rm -rf ./*
+
+COPY --from=build /app/dist .
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
