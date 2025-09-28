@@ -6,7 +6,7 @@
     "serve": "^14.2.4"
   },
   "scripts": {
-    "build": "npx tsc && cp index.html dist/ && cp styles.css dist/",
+    "build": "node ./node_modules/typescript/bin/tsc && cp index.html dist/ && cp styles.css dist/",
     "start": "serve dist"
   }
 }
